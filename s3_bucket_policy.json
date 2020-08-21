@@ -1,0 +1,50 @@
+
+security exam bucket policy
+
+we will need 2 account. a will provide access to accont B on one of A's bucket.
+
+on accont - A -create a new bucket
+add some items into the bucket.
+
+enter this in one the bucket policy of the account A. change the AccountID
+
+{
+  "Version":"2012-10-17",
+  "Statement":[
+    {
+      "Sid":"AddCannedAcl",
+      "Effect":"Allow",
+    "Principal": {"AWS": ["arn:aws:iam::111122223333:root","arn:aws:iam::444455556666:root"]},
+      "Action":["s3:PutObject","s3:PutObjectAcl"],
+      "Resource":"arn:aws:s3:::awsexamplebucket1/*",
+      "Condition":{"StringEquals":{"s3:x-amz-acl":["public-read"]}}
+    }
+  ]
+}
+
+{
+  "Version":"2012-10-17",
+  "Statement":[
+    {
+      "Sid": "jaikrishnaid",
+      "Effect": "Allow",
+    "Principal": {
+         "AWS": "arn:aws:iam::240512902229:root"
+     },
+      "Action": "s3:*",
+      "Resource":[
+      	"arn:aws:s3:::bskrcloud-json",
+      	"arn:aws:s3:::bskrcloud-json/*"
+      ]     
+    }
+    {
+    	"Sid": "Deny permissions",
+    	"Effect": "Deny",
+    	"Principal": {
+    		"AWS": "arn:aws:iam::240512902229"
+    	}
+    	"Action": "s3:GetOject",
+    	"Resource": "arn:aws:s3::bskrcloud-json/*"
+    }
+  ]
+}
